@@ -1,9 +1,8 @@
 ﻿using System;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 using System.Threading.Tasks;
-
+using System.IO;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace ScriptDemo
 {
@@ -11,29 +10,14 @@ namespace ScriptDemo
     {
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Write some C#");
-            var evaluate = true;
+            var userScriptPath = Path.Combine(Environment.CurrentDirectory, "scriptInput.txt");
+            var fileContents = File.ReadAllText(userScriptPath);
 
-            while(evaluate)
-            {
-                var input = Console.ReadLine();
-
-                if(input == "exit")
-                {
-                    evaluate = false;
-                    break;
-                }
-
-                if (input == "clear" || string.IsNullOrEmpty(input))
-                {
-                    Console.Clear();
-                    Console.WriteLine("Write some C#");
-                    continue;
-                }
-
-                object result = await CSharpScript.EvaluateAsync(input);
-                Console.WriteLine(result.ToString());
-            }
+            Script script = CSharpScript.Create(fileContents, ScriptOptions.Default);
+            var result = await script.RunAsync();
+            
+            Console.WriteLine($"Seconds in a week: {result.GetVariable("seconds").Value}");
         }
+
     }
 }

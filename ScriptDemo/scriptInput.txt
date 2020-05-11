@@ -1,0 +1,3 @@
+﻿var daysInWeek = 7;
+var seconds = System.TimeSpan.FromDays(daysInWeek).TotalSeconds;
+

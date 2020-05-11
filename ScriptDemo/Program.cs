@@ -24,7 +24,7 @@ namespace ScriptDemo
                     break;
                 }
 
-                if(input == "clear")
+                if (input == "clear" || string.IsNullOrEmpty(input))
                 {
                     Console.Clear();
                     Console.WriteLine("Write some C#");
